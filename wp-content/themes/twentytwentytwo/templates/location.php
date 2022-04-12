@@ -67,11 +67,11 @@ $image_path_prefix = '../images/';
 
 foreach($data as $location) {
     echo '<h1>'.$location['name'].' Hall</h1>';
-    echo '<h3><u>Description: </u><br>' .$location['description'] . '</h3>';
-    echo '<h3><u>Campus: </u><br>' .$location['campus'].'</h3>';
+    echo '<h4><u>Description: </u><br>' .$location['description'] . '</h4>';
+    echo '<h4><u>Campus: </u><br>' .$location['campus'];
     
     echo '<center>';
-    echo '<img src="'.$image_path_prefix.$location['image_path'].'">';
+    echo '<img src="'.$image_path_prefix.$location['image_path'].'"></h4>';
 }
 /*
 print "<table> <div class=\"other-items\"><tr> <td colspan=\"4\"> <h3> Other items made by $vendorName </h3> </td> </tr> <tr> ";
@@ -87,6 +87,8 @@ print " </tr> </table></div></div> </div>";
 
 ?>
 </center>
+
+<h4><a href="/wordpress">Return to Map</href></h4>
 
 <?php 
 block_footer_area();

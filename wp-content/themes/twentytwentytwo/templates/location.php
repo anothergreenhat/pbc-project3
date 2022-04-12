@@ -1,19 +1,29 @@
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+<div class="wp-site-blocks">
+
 <?php
 /**
  * Template Name: Location Page
  * Template Post Type: post, page
  *
  * @package WordPress
- * @subpackage Twenty_Twenty_One
- * @since Twenty Twenty One 1.0
+ * @subpackage Twenty_Twenty_Two
+ * @since Twenty Twenty Two 1.0
  */
 
+//block_header_area();
 ?>
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-
+<br>
 
 <?php
-
+/*
 function show_other_items($querystr, $con){
     $result = $con->query($querystr);
     $row = $result->fetch(PDO::FETCH_ASSOC);
@@ -36,7 +46,7 @@ function show_other_items($querystr, $con){
     if( $i < 1 )
         print "<td> none... </td>";
 }
-
+*/
 // SET UP DATABASE
 $con = new PDO('mysql:host=localhost;dbname=villanova_map', "root", "");
 $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -51,11 +61,16 @@ $data = $con->query($query);
 $data->setFetchMode(PDO::FETCH_ASSOC);
 // END SET UP
 
+
+// FETCH DATA FROM DB AND DISPLAY
 $image_path_prefix = '../images/';
 
 foreach($data as $location) {
-    echo $location['description'];
-    echo '<br>';
+    echo '<h1>'.$location['name'].' Hall</h1>';
+    echo '<h3><u>Description: </u><br>' .$location['description'] . '</h3>';
+    echo '<h3><u>Campus: </u><br>' .$location['campus'].'</h3>';
+    
+    echo '<center>';
     echo '<img src="'.$image_path_prefix.$location['image_path'].'">';
 }
 /*
@@ -71,6 +86,11 @@ print " </tr> </table></div></div> </div>";
 */
 
 ?>
+</center>
 
+<?php 
+block_footer_area();
+?>
 
-<?php get_footer(); ?>
+</body>
+</html>

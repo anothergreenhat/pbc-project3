@@ -32,12 +32,17 @@ function get_unique_location($data) {
     foreach($data as $location) {
         $campus = $location['campus'];
         $hall_name = $location['name'];
+
         echo '<h1>'.$hall_name.' Hall</h1>';
-        echo '<h4><u>Description: </u><br>' .$location['description'] . '</h4>';
-        echo '<h4><u>Campus: </u><br>' .$campus;
+
         
         echo '<center>';
         echo '<img src="'.$image_path_prefix.$location['image_path'].'"></h4>';
+        echo '</center>';
+
+        echo '<h4><u>Description: </u><br>' .$location['description'] . '</h4>';
+        echo '<h4><u>Campus: </u><br>' .$campus;
+        
     }
     return $campus;
 }
@@ -103,15 +108,25 @@ else {
 ?>
 </center>
 
-<h4><a href="/wordpress">Return to Map</a>
+<h5>
 
 <?php
 if ( $is_get_by_location) { 
 ?>
-&emsp;<a href="?campus=<?php echo $campus; ?>">View other <?php echo $campus; ?> Campus halls</a>
+<br> 
+<a href="?campus=<?php echo $campus; ?>">View other <?php echo $campus; ?> Campus halls</a> 
+<br> <br>
 <?php } ?>
 
-</h4>
+
+<a href="/wordpress">Return to Map</a>
+<?php if ( $is_get_by_campus || $is_get_by_location ) { ?>
+&emsp;<a href="/wordpress/places/">Return to Places</a>
+<?php } ?>
+
+
+
+</h5>
 
 
 <?php 

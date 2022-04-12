@@ -23,72 +23,96 @@
 <br>
 
 <?php
-/*
-function show_other_items($querystr, $con){
-    $result = $con->query($querystr);
-    $row = $result->fetch(PDO::FETCH_ASSOC);
 
-    $data = $con->query($querystr);
-    $data->setFetchMode(PDO::FETCH_ASSOC);
-    $i = 0;
-    foreach($data as $row)
-    {
-        foreach ($row as $field => $value)
-        {
-            if( $field == 'image_path') $image_path = $value;
-            if( $field == 'name') $name = $value;
-            if( $field == 'price') $price = $value;
-            if( $field == 'itemID') $newId = $value;
-            $i = $i + 1;
-        }
-        print "<td> <a href=\"/item-page/?itemid=$newId\"> <img src=\"/$image_path\"><br> $name: $$price</a>  </td>"; 
+$hall_name = null;
+$campus = null;
+
+function get_unique_location($data) {
+    $image_path_prefix = '../images/';
+    foreach($data as $location) {
+        $campus = $location['campus'];
+        $hall_name = $location['name'];
+        echo '<h1>'.$hall_name.' Hall</h1>';
+        echo '<h4><u>Description: </u><br>' .$location['description'] . '</h4>';
+        echo '<h4><u>Campus: </u><br>' .$campus;
+        
+        echo '<center>';
+        echo '<img src="'.$image_path_prefix.$location['image_path'].'"></h4>';
     }
-    if( $i < 1 )
-        print "<td> none... </td>";
+    return $campus;
 }
-*/
+
+function get_locations_by_campus($data, $campus) {
+    echo "<h1>";
+    echo $campus; ?> Campus Locations: </h1><?php
+    foreach($data as $location) {
+        echo '<h2><a href="?location='.$location['name'].'"<h2>'.$location['name'].' Hall</h2></h2>';
+    }
+    echo '<br><br><br>';
+}
+
 // SET UP DATABASE
 $con = new PDO('mysql:host=localhost;dbname=villanova_map', "root", "");
 $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+$is_get_by_location = isset($_GET['location']);
+$is_get_by_campus = isset($_GET['campus']);
 
-$hall_name = $_GET['location'];
-$query = "SELECT * FROM hall WHERE name = '$hall_name'";
-$result = $con->query($query);
-$row = $result->fetch(PDO::FETCH_ASSOC);
 
-$data = $con->query($query);
-$data->setFetchMode(PDO::FETCH_ASSOC);
+if ( $is_get_by_location ) {
+    $hall_name = $_GET['location'];
+    $query = "SELECT * FROM hall WHERE name = '$hall_name'"; 
+}
+else if ( $is_get_by_campus) {
+    $campus = $_GET['campus'];
+    $query = "SELECT * FROM hall WHERE campus = '$campus'";
+}
+else {
+    $query = null;
+    echo '<h1>Select a Campus: </h1>';
+    ?> <h2><a href="?campus=Main">Main</a> &nbsp; &nbsp; <?php
+    ?> <a href="?campus=West">West</a> &nbsp; &nbsp; <?php
+    ?> <a href="?campus=South">South</a> </h2><?php
+    echo "<br><br><br><br>";
+}
+
+if( isset($query) ) {
+    $result = $con->query($query);
+    $row = $result->fetch(PDO::FETCH_ASSOC);
+    $data = $con->query($query);
+    $data->setFetchMode(PDO::FETCH_ASSOC);
+}
 // END SET UP
 
 
-// FETCH DATA FROM DB AND DISPLAY
-$image_path_prefix = '../images/';
-
-foreach($data as $location) {
-    echo '<h1>'.$location['name'].' Hall</h1>';
-    echo '<h4><u>Description: </u><br>' .$location['description'] . '</h4>';
-    echo '<h4><u>Campus: </u><br>' .$location['campus'];
-    
-    echo '<center>';
-    echo '<img src="'.$image_path_prefix.$location['image_path'].'"></h4>';
+// PAGE START 
+if( isset($data) && $data->rowCount() == 0) {
+    echo '<h1>404 Not Found </h1>';
+    echo '<h4>The resource you are looking for on this map does not exist or hasn\'t been implemented yet.</h4>';
+    echo '<h4>Contact us at <a href="mailto:jmadera1@villanova.edu">map@villanova.edu</a> to have it added to the database.</h4>';
+    echo '<br><br><br><br>';
 }
-/*
-print "<table> <div class=\"other-items\"><tr> <td colspan=\"4\"> <h3> Other items made by $vendorName </h3> </td> </tr> <tr> ";
-show_other_items("SELECT image_path, name, price, itemID FROM Items WHERE vendorID = $vendor AND itemID != $param_id", $con);
-print " </tr> </table>";
-
-print "<br> <table> <tr> <td colspan=\"4\"> <h3> Other items in this category </h3> </td> </tr> <tr> ";
-show_other_items("SELECT image_path, name, price, itemID FROM Items WHERE category = $category AND itemID != $param_id", $con);
-
-print " </tr> </table></div></div> </div>";
-
-*/
+else {
+    if( $is_get_by_location )
+        $campus = get_unique_location($data, $campus);
+    else if ( $is_get_by_campus) {
+        get_locations_by_campus($data, $campus);
+    }
+}
 
 ?>
 </center>
 
-<h4><a href="/wordpress">Return to Map</href></h4>
+<h4><a href="/wordpress">Return to Map</a>
+
+<?php
+if ( $is_get_by_location) { 
+?>
+&emsp;<a href="?campus=<?php echo $campus; ?>">View other <?php echo $campus; ?> Campus halls</a>
+<?php } ?>
+
+</h4>
+
 
 <?php 
 block_footer_area();

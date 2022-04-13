@@ -3,6 +3,11 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<?php wp_head(); ?>
+    <style>
+        img {
+            width: 1000px;
+        }
+    </style>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -27,31 +32,45 @@
 $hall_name = null;
 $campus = null;
 
-function get_unique_location($data) {
+$non_hall_names = array('Church' => 'St. Thomas of Villanova Church', 'Soccer' => 'Soccer Complex', 'Tennis' => 'Tennis Courts', 'Softball' => 'Softball Field', 
+                        'Finneran' => 'Finneran Pavillion', 'Mendel' => 'Mendel Science Center', 'South' => 'South Campus Dorms', 'West' => 'West Campus Apartments',
+                        'Commons' => 'The Commons Apartments', 'Mullen' => 'The Mullen Center for the Performing Arts');
+
+function get_unique_location($data, $non_hall_names) {
     $image_path_prefix = '../images/';
     foreach($data as $location) {
         $campus = $location['campus'];
         $hall_name = $location['name'];
+        if (array_key_exists($hall_name, $non_hall_names) ) 
+            $hall_name = $non_hall_names[$hall_name];
+        else
+            $hall_name .= ' Hall';
 
-        echo '<h1>'.$hall_name.' Hall</h1>';
+        echo '<h1>'.$hall_name.'</h1>';
 
-        
         echo '<center>';
         echo '<img src="'.$image_path_prefix.$location['image_path'].'"></h4>';
         echo '</center>';
 
         echo '<h4><u>Description: </u><br>' .$location['description'] . '</h4>';
         echo '<h4><u>Campus: </u><br>' .$campus;
-        
     }
     return $campus;
 }
 
-function get_locations_by_campus($data, $campus) {
+function get_locations_by_campus($data, $campus, $non_hall_names) {
     echo "<h1>";
     echo $campus; ?> Campus Locations: </h1><?php
     foreach($data as $location) {
-        echo '<h2><a href="?location='.$location['name'].'"<h2>'.$location['name'].' Hall</h2></h2>';
+
+        $hall_name = $location['name'];
+        echo '<h2><a href="?location='.$hall_name.'"<h2>';
+
+        if (array_key_exists($hall_name, $non_hall_names) ) 
+            $hall_name = $non_hall_names[$hall_name];
+        else
+            $hall_name = $location['name'] . ' Hall';
+        echo $hall_name.'</h2></h2>';
     }
     echo '<br><br><br>';
 }
@@ -99,9 +118,9 @@ if( isset($data) && $data->rowCount() == 0) {
 }
 else {
     if( $is_get_by_location )
-        $campus = get_unique_location($data, $campus);
+        $campus = get_unique_location($data, $non_hall_names);
     else if ( $is_get_by_campus) {
-        get_locations_by_campus($data, $campus);
+        get_locations_by_campus($data, $campus, $non_hall_names);
     }
 }
 
@@ -109,19 +128,16 @@ else {
 </center>
 
 <h5>
-
-<?php
-if ( $is_get_by_location) { 
-?>
 <br> 
-<a href="?campus=<?php echo $campus; ?>">View other <?php echo $campus; ?> Campus halls</a> 
+<a href="/wordpress">Return to Map</a>
+<?php if ( $is_get_by_campus || $is_get_by_location ) { ?>
+&emsp;<a href="/wordpress/places/">Return to Places</a>
 <br> <br>
 <?php } ?>
 
 
-<a href="/wordpress">Return to Map</a>
-<?php if ( $is_get_by_campus || $is_get_by_location ) { ?>
-&emsp;<a href="/wordpress/places/">Return to Places</a>
+<?php if ( $is_get_by_location) { ?>
+<a href="?campus=<?php echo $campus; ?>">View other <?php echo $campus; ?> Campus locations</a> 
 <?php } ?>
 
 

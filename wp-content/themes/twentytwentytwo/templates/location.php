@@ -35,7 +35,8 @@ $campus = null;
 $non_hall_names = array('Church' => 'St. Thomas of Villanova Church', 'Soccer' => 'Soccer Complex', 'Tennis' => 'Tennis Courts', 'Softball' => 'Softball Field', 
                         'Finneran' => 'Finneran Pavillion', 'Mendel' => 'Mendel Science Center', 'South' => 'South Campus Dorms', 'West' => 'West Campus Apartments',
                         'Commons' => 'The Commons Apartments', 'Mullen' => 'The Mullen Center for the Performing Arts', 'StMarys' => 'St. Mary\'s Hall',
-                        'Law' => 'Charles Widger School of Law', 'CEER' => 'CEER', 'Connelly' => 'Connelly Center', 'Nevin' => 'Jake Nevin Field House');
+                        'Law' => 'Charles Widger School of Law', 'CEER' => 'CEER', 'Connelly' => 'Connelly Center', 'Nevin' => 'Jake Nevin Field House',
+                        'Stadium' => 'Villanova Stadium', 'Refectory' => 'The Refectory');
 
 function get_unique_location($data, $non_hall_names) {
     $image_path_prefix = '../images/';

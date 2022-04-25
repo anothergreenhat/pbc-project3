@@ -36,7 +36,7 @@ $non_hall_names = array('Church' => 'St. Thomas of Villanova Church', 'Soccer' =
                         'Finneran' => 'Finneran Pavillion', 'Mendel' => 'Mendel Science Center', 'South' => 'South Campus Dorms', 'West' => 'West Campus Apartments',
                         'Commons' => 'The Commons Apartments', 'Mullen' => 'The Mullen Center for the Performing Arts', 'StMarys' => 'St. Mary\'s Hall',
                         'Law' => 'Charles Widger School of Law', 'CEER' => 'CEER', 'Connelly' => 'Connelly Center', 'Nevin' => 'Jake Nevin Field House',
-                        'Stadium' => 'Villanova Stadium', 'Refectory' => 'The Refectory');
+                        'Stadium' => 'Villanova Stadium', 'Refectory' => 'The Refectory', 'Davis' => 'The Davis Center for Athletics');
 
 function get_unique_location($data, $non_hall_names) {
     $image_path_prefix = '../images/';
@@ -87,11 +87,11 @@ $is_get_by_campus = isset($_GET['campus']);
 
 if ( $is_get_by_location ) {
     $hall_name = $_GET['location'];
-    $query = "SELECT * FROM hall WHERE name = '$hall_name'"; 
+    $query = "SELECT * FROM hall WHERE name = '$hall_name' order by name ASC"; 
 }
 else if ( $is_get_by_campus) {
     $campus = $_GET['campus'];
-    $query = "SELECT * FROM hall WHERE campus = '$campus'";
+    $query = "SELECT * FROM hall WHERE campus = '$campus' order by name ASC";
 }
 else {
     $query = null;
@@ -133,7 +133,7 @@ else {
 <br> 
 <a href="/wordpress">Return to Map</a>
 <?php if ( $is_get_by_campus || $is_get_by_location ) { ?>
-&emsp;<a href="/wordpress/places/">Return to Places</a>
+    &emsp;<a href="/wordpress/places/">Return to Places</a>
 <br> <br>
 <?php } ?>
 

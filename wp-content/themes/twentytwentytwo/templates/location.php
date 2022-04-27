@@ -3,6 +3,9 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<?php wp_head(); ?>
+    <title>
+        <?php if(isset($_GET['location'])) echo $_GET['location'] ?>
+    </title>
     <style>
         img {
             width: 1000px;
@@ -32,11 +35,14 @@
 $hall_name = null;
 $campus = null;
 
-$non_hall_names = array('Church' => 'St. Thomas of Villanova Church', 'Soccer' => 'Soccer Complex', 'Tennis' => 'Tennis Courts', 'Softball' => 'Softball Field', 
+$non_hall_names = array('Church' => 'St. Thomas of Villanova Church', 'Soccer' => 'Higgins Soccer Complex', 'Tennis' => 'Tennis Courts', 'Softball' => 'Softball Field', 
                         'Finneran' => 'Finneran Pavillion', 'Mendel' => 'Mendel Science Center', 'South' => 'South Campus Dorms', 'West' => 'West Campus Apartments',
                         'Commons' => 'The Commons Apartments', 'Mullen' => 'The Mullen Center for the Performing Arts', 'StMarys' => 'St. Mary\'s Hall',
                         'Law' => 'Charles Widger School of Law', 'CEER' => 'CEER', 'Connelly' => 'Connelly Center', 'Nevin' => 'Jake Nevin Field House',
-                        'Stadium' => 'Villanova Stadium', 'Refectory' => 'The Refectory', 'Davis' => 'The Davis Center for Athletics and Fitness');
+                        'Stadium' => 'Villanova Stadium', 'Refectory' => 'The Refectory', 'Davis' => 'The Davis Center for Athletics and Fitness',
+                        'Chemical' => 'Chemical Engineering Building', 'Falvey' => 'Falvey Memorial Library', 'Health' => 'Health Services Building',
+                        'JohnBarry' => 'John Barry Hall', 'MendelField' => 'Mendel Field', 'Monastery' => 'Augustinian Monastery', 'Odwyer' => 'O\'Dwyer Hall',
+                        'Quad' => 'The Quad', 'SAC' => 'Saint Augustine Center', 'StRita' => 'St. Rita\'s Hall', 'Garage' => 'I-1 Parking Garage');
 
 function get_unique_location($data, $non_hall_names) {
     $image_path_prefix = '../images/';

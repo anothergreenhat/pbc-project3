@@ -4,7 +4,8 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<?php wp_head(); ?>
     <title>
-        <?php if(isset($_GET['location'])) echo $_GET['location'] ?>
+        <?php if(isset($_GET['location'])) echo $_GET['location'];
+              else if( isset($_GET['campus'])) echo $_GET['campus']; ?>
     </title>
     <style>
         img {
